@@ -1,17 +1,20 @@
+# latlon_to_xy.py
+
 import math
 
-# 기준점: 37.5665°N, 126.9780°E (서울)
+# 위도/경도를 기상청 격자 좌표로 변환하는 함수
 def dfs_xy_conv(lat, lon):
-    RE = 6371.00877  # Earth radius (km)
-    GRID = 5.0  # Grid spacing (km)
-    SLAT1 = 30.0
-    SLAT2 = 60.0
-    OLON = 126.0
-    OLAT = 38.0
-    XO = 43
-    YO = 136
+    RE = 6371.00877  # 지구 반경 (km)
+    GRID = 5.0       # 격자 간격 (km)
+    SLAT1 = 30.0     # 투영 위도1
+    SLAT2 = 60.0     # 투영 위도2
+    OLON = 126.0     # 기준점 경도
+    OLAT = 38.0      # 기준점 위도
+    XO = 43          # 기준점 X좌표
+    YO = 136         # 기준점 Y좌표
 
     DEGRAD = math.pi / 180.0
+
     re = RE / GRID
     slat1 = SLAT1 * DEGRAD
     slat2 = SLAT2 * DEGRAD
@@ -34,7 +37,9 @@ def dfs_xy_conv(lat, lon):
         theta += 2.0 * math.pi
     theta *= sn
 
-    x = int(ra * math.sin(theta) + XO + 0.5)
-    y = int(ro - ra * math.cos(theta) + YO + 0.5)
+    x = ra * math.sin(theta) + XO
+    y = ro - ra * math.cos(theta) + YO
+    x = int(x + 1.5)
+    y = int(y + 1.5)
 
-    return {'x': x, 'y': y}
+    return {"x": x, "y": y}

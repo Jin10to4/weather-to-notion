@@ -1,5 +1,6 @@
 import os
 import requests
+import sys
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
@@ -15,6 +16,15 @@ NX = os.getenv("NX")
 NY = os.getenv("NY")
 
 notion = Client(auth=NOTION_TOKEN)
+
+
+# 인자 받아오기
+if len(sys.argv) >= 3:
+    try:
+        NX = int(sys.argv[1])
+        NY = int(sys.argv[2])
+    except ValueError:
+        print("⚠️ nx, ny 값이 정수가 아닙니다. 기본값으로 진행합니다.")
 
 def get_base_time_ultrasrt():
     # 초단기 관측용 base_time (10분 전 시점, 10분 단위 절삭)
